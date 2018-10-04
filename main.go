@@ -114,14 +114,12 @@ func (ai *basicAI) count(card deck.Card){
 func main() {
 	opts := blackjack.Options{
 		Decks:           4,
-		Hands:           10000,
+		Hands:           10,
 		BlackJackPayout: 1.5,
 	}
 	game := blackjack.New(opts)
-	//use winnings := game.Play(blackjack.HumanAI()) for playable version
-	//use winnings := game.Play(&basicAI{
-	//									decks: 4
-	//									}) for simulation
+	
+	//winnings := game.Play(blackjack.HumanAI()) //for playable version
 	winnings := game.Play(&basicAI{
 		decks: 4,
 	})
