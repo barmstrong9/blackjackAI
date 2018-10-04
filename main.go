@@ -35,20 +35,20 @@ func (ai *basicAI) Play(hand []deck.Card, dealer deck.Card) blackjack.Move {
 	cardScore := blackjack.Score(hand[0])
 	if len(hand) == 2{
 		if hand[0] == hand[1]{
-		switch {
-		case cardScore == 11 || cardScore == 8:
+			switch {
+			case cardScore == 11 || cardScore == 8:
 			return blackjack.MoveSplit
-		case (cardScore ==2 || cardScore ==3) && (dScore >= 4 && dScore <=7):
+			case (cardScore ==2 || cardScore ==3) && (dScore >= 4 && dScore <=7):
 			return blackjack.MoveSplit
-		case cardScore ==4 && (dScore == 5 || dScore == 6):
+			case cardScore ==4 && (dScore == 5 || dScore == 6):
 			return blackjack.MoveSplit
-		case cardScore ==6 && (dScore >= 2 && dScore <= 6):
+			case cardScore ==6 && (dScore >= 2 && dScore <= 6):
 			return blackjack.MoveSplit
-		case cardScore ==7 && (dScore >= 2 && dScore <= 7):
+			case cardScore ==7 && (dScore >= 2 && dScore <= 7):
 			return blackjack.MoveSplit
-		case cardScore ==9 && (dScore >= 2 && dScore <= 9):
+			case cardScore ==9 && (dScore >= 2 && dScore <= 9):
 			return blackjack.MoveSplit
-		}
+			}
 		}
 		switch {
 		case (score == 9 && !blackjack.Soft(hand...))&&(dScore >= 3 && dScore <= 6):
@@ -114,14 +114,14 @@ func (ai *basicAI) count(card deck.Card){
 func main() {
 	opts := blackjack.Options{
 		Decks:           4,
-		Hands:           90000,
+		Hands:           10000,
 		BlackJackPayout: 1.5,
 	}
 	game := blackjack.New(opts)
-	//use winnings := game.Play(blackjack.HumanAI()) for non-simulation
+	//use winnings := game.Play(blackjack.HumanAI()) for playable version
 	//use winnings := game.Play(&basicAI{
 	//									decks: 4
-	//									}) for non-simulation
+	//									}) for simulation
 	winnings := game.Play(&basicAI{
 		decks: 4,
 	})
