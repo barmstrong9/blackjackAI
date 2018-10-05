@@ -122,14 +122,6 @@ func (g *Game) Play(ai AI) int {
 			endRound(g, ai)
 			continue
 		}
-		if Fivecard(g.dealer...) {
-			endRound(g, ai)
-			continue
-		}
-		if Fivecard(){
-			endRound(g, ai)
-			continue
-		}
 
 		for g.state == statePlayerTurn {
 			hand := make([]deck.Card, len(*g.currentHand()))
@@ -253,10 +245,6 @@ func Blackjack(hand ...deck.Card) bool {
 	return len(hand) == 2 && Score(hand...) == 21
 }
 
-func Fivecard(hand ...deck.Card) bool{
-	return len(hand) ==5 && Score(hand...) <= 21
-}
-
 func minScore(hand ...deck.Card) int {
 	score := 0
 	for _, c := range hand {
@@ -280,14 +268,8 @@ func endRound(g *Game, ai AI) {
 		allHands[hi] = hand.cards
 		cards := hand.cards
 		pScore, pBlackJack := Score(cards...), Blackjack(cards...)
-		pFiveCard := Fivecard(cards...)
-		dFiveCard := Fivecard(g.dealer...)
 		winnings := hand.bet
 		switch {
-		case pFiveCard:
-			//win
-		case dFiveCard:
-			winnings = -winnings
 		case pBlackJack && dBlackJack:
 			winnings = 0
 		case dBlackJack:
