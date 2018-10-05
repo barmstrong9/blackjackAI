@@ -34,58 +34,112 @@ func (ai *basicAI) Play(hand []deck.Card, dealer deck.Card) blackjack.Move {
 	dScore := blackjack.Score(dealer)
 	cardScore := blackjack.Score(hand[0])
 	if len(hand) == 2{
-		if hand[0] == hand[1]{
-			switch {
-			case cardScore == 11 || cardScore == 8:
-			return blackjack.MoveSplit
-			case (cardScore ==2 || cardScore ==3) && (dScore >= 4 && dScore <=7):
-			return blackjack.MoveSplit
-			case cardScore ==4 && (dScore == 5 || dScore == 6):
-			return blackjack.MoveSplit
-			case cardScore ==6 && (dScore >= 2 && dScore <= 6):
-			return blackjack.MoveSplit
-			case cardScore ==7 && (dScore >= 2 && dScore <= 7):
-			return blackjack.MoveSplit
-			case cardScore ==9 && (dScore >= 2 && dScore <= 9):
-			return blackjack.MoveSplit
-			}
-		}
 		switch {
 		case (score == 9 && !blackjack.Soft(hand...))&&(dScore >= 3 && dScore <= 6):
 			return blackjack.MoveDouble
+		
 		case (score == 10 && !blackjack.Soft(hand...))&&(dScore != 10 && dScore != 11):
 			return blackjack.MoveDouble
+		
 		case (score == 11 && !blackjack.Soft(hand...))&& dScore != 11:
 			return blackjack.MoveDouble
-		case ((score ==13 || score ==14) && blackjack.Soft(hand...) == true) && (dScore == 5 || dScore ==6):
+		
+		case ((score ==13 || score ==14) && blackjack.Soft(hand...)) && (dScore == 5 || dScore ==6):
 			return blackjack.MoveDouble
-		case ((score == 15 || score ==16) && blackjack.Soft(hand...) == true) && (dScore >= 4 &&  dScore <=6):
+		case ((score ==13 || score ==14) && blackjack.Soft(hand...)) && (dScore <= 4 || dScore >=7):
+
+		case ((score == 15 || score ==16) && blackjack.Soft(hand...)) && (dScore >= 4 &&  dScore <=6):
 			return blackjack.MoveDouble
-		case ((score == 17 || score ==18) && blackjack.Soft(hand...) == true) && (dScore >=3 && dScore <=6):
+		case ((score == 15 || score ==16) && blackjack.Soft(hand...)) && (dScore <= 3 ||  dScore >=7):
+			return blackjack.MoveHit
+
+		case (score == 17 && blackjack.Soft(hand...)) && (dScore >=3 && dScore <=6):
 			return blackjack.MoveDouble
-		case score <= 11 && !blackjack.Soft(hand...):
+		case (score == 17 && blackjack.Soft(hand...)) && (dScore ==2 || dScore >=7):
+			return blackjack.MoveHit
+
+		case (score ==18 && blackjack.Soft(hand...)) && (dScore >= 2 && dScore <=6):
+			return blackjack.MoveDouble
+		case (score ==18 && blackjack.Soft(hand...)) && (dScore >= 9 && dScore <=11):
+			return blackjack.MoveHit
+		case (score ==18 && blackjack.Soft(hand...)) && (dScore ==7 || dScore == 8):
+		return blackjack.MoveStand
+
+		case (score ==19 && blackjack.Soft(hand...)) && dScore == 6:
+			return blackjack.MoveDouble
+		case (score == 19 && blackjack.Soft(hand...)) && (dScore <=5 || dScore >= 7):
+			return blackjack.MoveStand
+		
+		case score ==20 && blackjack.Soft(hand...):
+			return blackjack.MoveStand 
+		}
+	}
+	if len(hand) == 2{
+		if hand[0] == hand[1]{
+			switch {
+			case cardScore == 11 || cardScore == 8:
+				return blackjack.MoveSplit
+			
+			case (cardScore == 2 || cardScore == 3) && (dScore >= 2 && dScore <=7):
+				return blackjack.MoveSplit
+			case (cardScore == 2 || cardScore == 3) && (dScore >=8):
+				return blackjack.MoveHit
+
+			case cardScore == 4 && (dScore == 5 || dScore == 6):
+				return blackjack.MoveSplit
+			case cardScore == 4 && (dScore < 5 || dScore > 6):
+				return blackjack.MoveHit
+			
+			case cardScore == 5 && (dScore >=2 && dScore <= 9):
+				return blackjack.MoveDouble
+			case cardScore == 5 && dScore >=10:
+				return blackjack.MoveHit
+			
+			case cardScore ==6 && (dScore >= 2 && dScore <= 6):
+				return blackjack.MoveSplit
+			case cardScore ==6 && (dScore >= 7):
+				return blackjack.MoveHit
+			
+			case cardScore ==7 && (dScore >= 2 && dScore <= 7):
+				return blackjack.MoveSplit
+			case cardScore ==7 && dScore >=8:
+				return blackjack.MoveHit
+			
+			case cardScore ==9 && (dScore >= 2 && dScore <= 6) && (dScore >= 8 && dScore>=9):
+			return blackjack.MoveSplit
+			case cardScore ==9 && (dScore == 7):
+			return blackjack.MoveHit
+			}
+		}
+		switch {
+		case (score ==9 && !blackjack.Soft(hand...)) && (dScore >= 3 && dScore <= 6):
+			return blackjack.MoveDouble
+		case (score == 10 && !blackjack.Soft(hand...)) && (dScore >=2 && dScore <=9):
+			return blackjack.MoveDouble
+		case score == 11 && !blackjack.Soft(hand...):
+			return blackjack.MoveDouble
+		case score == 11 && !blackjack.Soft(hand...):
+			return blackjack.MoveDouble
+		}
+	}
+		switch {
+		case (score ==8 && !blackjack.Soft(hand...)):
+			return blackjack.MoveHit
+		case (score ==9 && !blackjack.Soft(hand...)) && (dScore == 2 || dScore > 7):
+			return blackjack.MoveHit
+		case (score == 10 && !blackjack.Soft(hand...)) && (dScore ==10 || dScore ==11):
 			return blackjack.MoveHit
 		case score == 12 && !blackjack.Soft(hand...) && (dScore >= 4 && dScore <= 6):
 			return blackjack.MoveStand
-		case score == 12 && !blackjack.Soft(hand...):
+		case score == 12 && !blackjack.Soft(hand...) && (dScore <= 3 && dScore >= 7):
 			return blackjack.MoveHit
 		case (score >= 13 && score <= 16)&& !blackjack.Soft(hand...) && (dScore >= 2 && dScore <= 6):
 			return blackjack.MoveStand
-		case (score >= 13 && score <= 16)&& !blackjack.Soft(hand...):
+		case (score >= 13 && score <= 16)&& !blackjack.Soft(hand...) && (dScore >= 7):
 			return blackjack.MoveHit
 		case score >= 17 && !blackjack.Soft(hand...):
 			return blackjack.MoveStand
-		case score <= 17 && blackjack.Soft(hand...):
-			return blackjack.MoveHit
-		case (score == 18 && blackjack.Soft(hand...)) && (dScore >= 9 && dScore <=11):
-			return blackjack.MoveHit
-		case score == 18 && blackjack.Soft(hand...):
-			return blackjack.MoveStand
-		case score >= 19 && blackjack.Soft(hand...):
-			return blackjack.MoveStand
 		}
-		 
-	}
 	return blackjack.MoveStand
 }
 
@@ -119,9 +173,9 @@ func main() {
 	}
 	game := blackjack.New(opts)
 	
-	//winnings := game.Play(blackjack.HumanAI()) //for playable version
-	winnings := game.Play(&basicAI{
-		decks: 4,
-	})
+	winnings := game.Play(blackjack.HumanAI()) //for playable version
+	// winnings := game.Play(&basicAI{
+	// 	decks: 4,
+	// })
 	fmt.Println("winnings:", winnings)
 }
